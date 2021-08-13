@@ -25,6 +25,9 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('dashboard', views.dashboard, name='dashboard'),
 
+    #Authentication
+    path('signup', views.SignUp.as_view(),name='signup'),
+    path('login', auth_views.LoginView.as_view(),name='login'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
