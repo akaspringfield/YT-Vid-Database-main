@@ -27,7 +27,7 @@ urlpatterns = [
 
     #Authentication
     path('signup', views.SignUp.as_view(),name='signup'),
-    path('login', auth_views.LoginView.as_view(),name='login'),
+    path('login', auth_views.LoginView.as_view(),name='logins'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
