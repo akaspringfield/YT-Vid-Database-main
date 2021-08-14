@@ -35,9 +35,23 @@ def add_video(request, pk):
 
     if request.method == 'POST':
         form = VideoForm(request.POST)
-       
+        if form.is_valid():
+            video = Video()
+            video.hall = hall
+            video.url = form.cleaned_data['url']
+            parsed_url = urllib.parse.urlparse(video.url)
+            video_id = urllib.parse.parse_qs(parsed_url.query).get('v')
+            if video_id:
+                video.youtube_id = video_id[0]
+                response = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={ video_id[0] }&key={ YOUTUBE_API_KEY }')
+                json = response.json()
+                title = json['items'][0]['snippet']['title']
+                video.title = title
+                video.save()
+                return redirect('detail_hall', pk)
 
-    return render(request, 'halls/add_video.html', {'form':form,'search_form':search_form, 'hall':hall})
+            else:
+                errors = form._errors.setdefault('url', ErrorList())
+                errors.append('Needs to be a YouTube URL')
 
-
-
+    return render(request, 'halls/add_video.html', {'form':form, 'search_form':search_form, 'hall':hall})
