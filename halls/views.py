@@ -70,3 +70,14 @@ def video_search(request):
 
     return JsonResponse({'error':'Not working'})
 
+
+class DeleteVideo(LoginRequiredMixin, generic.DeleteView):
+    model = Video
+    template_name = 'halls/delete_video.html'
+    success_url = reverse_lazy('dashboard')
+
+    def get_object(self):
+        video = super(DeleteVideo, self).get_object()
+        if not video.hall.user == self.request.user:
+            raise Http404
+        return video
