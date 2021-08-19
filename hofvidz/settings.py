@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'halls',
-    ]
+    'widget_tweaks',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
