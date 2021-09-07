@@ -83,6 +83,13 @@ class DeleteVideo(LoginRequiredMixin, generic.DeleteView):
         return video
 
 
+class SignUp(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('dashboard')
+    template_name = 'registration/signup.html'
+
+    
+        return view
 
 
 
@@ -97,6 +104,23 @@ class CreateHall(LoginRequiredMixin, generic.CreateView):
         form.instance.user = self.request.user
         super(CreateHall,self).form_valid( form )
         return redirect('dashboard')
+
+
+class DetailHall(generic.DetailView):
+    model = Hall
+    template_name = 'halls/detail_hall.html'
+
+class UpdateHall(LoginRequiredMixin, generic.UpdateView):
+    model = Hall
+    template_name = 'halls/update_hall.html'
+    fields = ['title']
+    success_url = reverse_lazy('dashboard')
+
+    def get_object(self):
+        hall = super(UpdateHall, self).get_object()
+        if not hall.user == self.request.user:
+            raise Http404
+        return hall
 
 class DeleteHall(LoginRequiredMixin, generic.DeleteView):
     model = Hall
