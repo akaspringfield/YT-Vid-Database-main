@@ -93,6 +93,8 @@ class SignUp(generic.CreateView):
         view = super(SignUp, self).form_valid(form)
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+        login(self.request, user)
         return view
 
 
